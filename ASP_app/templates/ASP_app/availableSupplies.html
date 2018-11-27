@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+a:link, a:visited {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+
+}
+
+a:hover, a:active {
+    background-color: blue;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+   background-color: #dddddd;
+}
+
+</style>
+</head>
+<body>
+
+<a href="/dashboard" target="_blank">Home</a>
+<a href="/orderSupplies" target="_blank">Order Supplies</a>
+<a href="/orderStatus" target="_blank">Order Status</a>
+<a href="/userProfile" target="_blank">User Profile</a>
+
+<h1>Order Supplies</h1>
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Quantity</th>
+    <th>Product ID</th>
+    <th>Image</th>
+    <th>Description</th>
+    <th>Additional Details</th>
+  </tr>
+
+{% if medicines %}
+    {% for medicine in medicines %}
+        <tr>
+            <td>{{medicine.category}}</td>
+            <td><form action="/orderSupplies/" method="post">{% csrf_token %}<input type="number" name="ordQuantity" min="0"><input type="submit"></form></td>
+            <td>{{medicine.id}}</td>
+            <td>{{medicine.picture}}</td>
+            <td>{{medicine.description}}</td>
+        </tr>
+    {% endfor %}
+{% endif %}
+</table>
+
+<form action="/forms.py">
+  <input type="submit">
+</form>
+
+
+</body>
+</html>

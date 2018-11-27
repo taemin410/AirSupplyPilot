@@ -1,0 +1,29 @@
+{% extends "ASP_app/base.html" %}
+
+
+
+{% block content %}
+
+Start a new order:
+
+<form action="/startOrder/" method="post">
+    {% csrf_token %}
+
+    <select name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+    </select>
+    <select name="destination">
+        {% for clinic in clinics %}
+            <option value="{{clinic.id}}">{{clinic.name}}</option>
+        {% endfor %}
+    </select>
+    <!-- <input type="hidden" name="destination" value="{{user.clinic}}"> -->
+    <input type="submit">
+</form>
+
+
+
+
+{% endblock %}

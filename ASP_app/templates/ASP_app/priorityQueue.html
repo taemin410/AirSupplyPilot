@@ -1,0 +1,35 @@
+{% extends "ASP_app/base.html" %}
+
+{% block content %}
+
+    {% if orders %}
+        <table width="80%">
+          <tr>
+            <th>Order No.:</th>
+            <th>Priority:</th>
+            <th>Weight:</th>
+            <th></th>
+          </tr>
+        {% for order in orders %}
+            {% if order.status == "Queued for Processing" %}
+                <tr>
+                    <th>{{ order.id }} </th>
+                    <th>{{ order.priority }} </th>
+                    <th>{{ order.totalWeight }}</th>
+                    <th>
+                        <form action="/packing/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value={{order.id}} name="ordID">
+                            <input type="hidden" value="Processing by Warehouse" name="choice">
+                            <input type="submit" value="Start processing">
+                        </form>
+                    </th>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No orders are available.</p>
+    {% endif %}
+
+{% endblock %}

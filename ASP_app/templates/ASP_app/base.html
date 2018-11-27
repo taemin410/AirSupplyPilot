@@ -1,0 +1,45 @@
+<head>
+<style>
+a:link, a:visited {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+
+}
+
+a:hover, a:active {
+    background-color: blue;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+   background-color: #dddddd;
+}
+
+</style>
+</head>
+
+
+<header>
+    <a href="/dashboard">Home</a>
+    <a href='/priorityQueue'>Priority queue</a>
+    <a href="/startOrder">Order Supplies</a>
+    <a href='/orderStatus'>Packing</a>
+    <a href='/profile/'>User profile</a>
+    <a href='/dispatch'>Dispatch</a>
+</header>
+{% block content %}{% endblock %}

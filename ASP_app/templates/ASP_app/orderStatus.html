@@ -1,0 +1,51 @@
+{% extends "ASP_app/base.html" %}
+
+
+
+{% block content %}
+
+    {% if orders %}
+        <table width="80%">
+            <tr>
+                <th><u>Order No.</u></th>
+                <th><u>Specification</u></th>
+                {% if isWarehouse %}
+                    <th><u>PDF</u></th>
+                {% endif %}
+                <th><u>Status</u></th>
+                <th><u>Weight</u></th>
+                <th><u>Change status</u></th>
+                <th><u>Delivered Time</u></th>
+            </tr>
+        {% for order in orders %}
+                <tr style="font-weight: normal;">
+                    <th style="font-weight: normal;">{{ order.destination }} </th>
+                    <th style="font-weight: normal;">something for spec</th>
+                    {% if isWarehouse %}
+                        <th style="font-weight: normal;"> <a href="/downloadlabel?order={{order.id}}" target="_blank">something for pdf</a></th>
+                    {% endif %}
+                    <th style="font-weight: normal;">{{ order.status }}</th>
+                    <th style="font-weight: normal;">{{ order.totalWeight }} kg</th>
+                    <th>
+                        <form action="/orderStatus/" method="post">
+                            {% csrf_token %}
+                            <input type="Hidden" value={{order.id}} name="ordID">
+                            <select label="choice" name="choice">
+                                    <option value="Queued for Processing">Queued for Processing</option>
+                                    <option value="Processing by Warehouse">Processing by Warehouse</option>
+                                    <option value="Queued for Dispatch">Queued for Dispatch</option>
+                                    <option value="Dispatched">Dispatched</option>
+                                    <option value="Delivered">Delivered</option>
+
+                            </select>
+                            <input type="submit" value="change">
+                        </form>
+                    </th>
+                </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No orders are available.</p>
+    {% endif %}
+
+{% endblock %}

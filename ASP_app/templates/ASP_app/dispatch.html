@@ -1,0 +1,33 @@
+{% extends "ASP_app/base.html" %}
+
+{% block content %}
+
+    {% if orders %}
+
+        <table width="80%"><tr><th>Priority:</th><th>Order No.</th><th>Weight:</th><th></th></tr>
+
+        <h2> {{counter}} orders with highest priority </h2>
+        <p> with ~5.0 kg per drone </p>
+
+        {% for order in orders %}
+                <form action="/dispatching/" method="post">  {% csrf_token %}
+
+                <tr>
+                    <th>{{ order.get_priority_display }} </th>
+                    <th>{{ order.id }} </th>
+                    <th>{{ order.totalWeight }}</th>
+                </tr>
+                <input type="hidden" value={{counter}} name="counter">
+                <input type="hidden" value={{order.id}} name="ordID">
+        {% endfor %}
+                </table>
+                    <input type="submit" value="Dispatch" name="Dispatch">
+                </form>
+
+    {% else %}
+
+        <p>No orders are in dispatch queue.</p>
+
+    {% endif %}
+
+{% endblock %}

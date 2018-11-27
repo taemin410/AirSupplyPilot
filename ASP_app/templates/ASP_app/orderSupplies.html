@@ -1,0 +1,106 @@
+{% extends "ASP_app/base.html" %}
+
+
+
+{% block content %}
+
+    <h1>Order Supplies</h1>
+    <h2>Order Nr: {{ order.pk }}</h2>
+    Priority: {{ order.priority }} <br>
+
+    <table>
+      <tr>
+        <th>Quantity</th>
+        <th>Category</th>
+        <th>Product ID</th>
+        <th>Image</th>
+        <th>weight</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+
+    {% if medicines %}
+        {% for medicine in medicines %}
+            <form action="/orderSupplies/" method="post">
+                {% csrf_token %}
+                <tr>
+                    <input type="hidden" name="orderID" value="{{order.pk}}">
+                    <input type="hidden" name="priority" value="{{order.priority}}">
+                    <input type="hidden" name="medicine" value="{{medicine.id}}">
+                    <th><input type="number" name="quantity" min="0" placeholder="0"></th>
+                    <th>{{medicine.category}}</th>
+                    <th>{{medicine.id}}</th>
+                    <th><img src="{{medicine.picture}}"></th>
+                    <th>{{medicine.shippingWeight}}</th>
+                    <th>{{medicine.description}}</th>
+                    <th><input type="submit" value="order"></th>
+
+                </tr>
+            </form>
+        {% endfor %}
+    {% endif %}
+    </table>
+
+    {% if items %}
+        <h1> Current order <h1>
+
+            <table>
+              <tr>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Product ID</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>totalweight medicine</th>
+                <th></th>
+                <th></th>
+              </tr>
+
+              {% for item in items %}
+                      <tr>
+                          <form action="/orderSupplies/" method="post">
+                              {% csrf_token %}
+                          <input type="hidden" name="orderID" value="{{order.pk}}">
+                          <input type="hidden" name="priority" value="{{order.priority}}">
+                          <input type="hidden" name="itemID" value="{{item.pk}}">
+                          <th><input type="number" name="quantity" min="0" placeholder="{{item.quantity}}"></th>
+                          <th>{{item.medicine.category}}</th>
+                          <th>{{item.medicine.id}}</th>
+                          <th><img src="{{item.medicine.picture}}"></th>
+                          <th>{{item.medicine.description}}</th>
+                          <th>{{item.weight}} kg</th>
+                          <th><input type="submit" value="change"></th>
+                      </form>
+                          <th>
+                              <form action="/orderSupplies/" method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="orderID" value="{{order.pk}}">
+                                  <input type="hidden" name="priority" value="{{order.priority}}">
+                                  <input type="hidden" name="itemID" value="{{item.pk}}">
+                                  <input type="hidden" name="delete" value="DELETE">
+                                  <input type="submit" value="delete">
+                              </form>
+                          </th>
+
+                      </tr>
+              {% endfor %}
+
+          </table>
+          <br>
+          <h4>Total weight: {{ order.totalWeight }} kg</h4>
+
+          <form action="/orderSupplies/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="orderID" value="{{order.pk}}">
+              <input type="hidden" name="confirm" value="CONFIRM">
+              <input type="submit" value="Confirm order">
+          </form>
+          <form action="/orderSupplies/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="orderID" value="{{order.pk}}">
+              <input type="hidden" name="cancel" value="CANCEL">
+              <input type="submit" value="Cancel order">
+          </form>
+
+    {% endif %}
+{% endblock %}

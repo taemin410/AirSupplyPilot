@@ -1,0 +1,28 @@
+{% extends "ASP_app/base.html" %}
+
+{% block content %}
+
+  <h1>Current order</h1>
+
+  {% if order %}
+    Order id.: {{ order.id }} <br>
+    Priority: {{ order.priority }} <br>
+    Weight: {{ order.totalWeight }}<br> <br>
+    <h2>Contents:</h2><br>
+    {% for item in orderItems %}
+      Description: {{item.medicine.description}} <br>
+      Quantity: {{item.quantity}} <br>
+      Category: {{item.medicine.category}} <br> <br>
+    {% endfor %}
+    <th style="font-weight: normal;"> <a href="/downloadlabel?order={{order.id}}" target="_blank">something for pdf</a></th>
+    <form action="/priorityQueue/" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{order.id}} name="ordID">
+        <input type="hidden" value="Queued for Dispatch" name="choice">
+        <input type="submit" value="Finish processing">
+    </form>
+  {% else %}
+      <p>No order is being processed at the moment.</p>
+  {% endif %}
+
+{% endblock %}
