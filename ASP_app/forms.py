@@ -1,7 +1,6 @@
 from django import forms
-from .models import Order
-
-from .models import Clinic
+from .models import Clinic, ClinicDistances
+from datetime import datetime
 
 class StatusChangeForm(forms.Form):
     CHOICES = (('Queued for Processing','Queued for Processing'),
@@ -11,37 +10,28 @@ class StatusChangeForm(forms.Form):
         ('Delivered','Delivered'))
     ordID = forms.IntegerField()
     choice = forms.ChoiceField(choices=CHOICES)
+    # datetime = forms.DateTimeField()
 
 class DispatchForm(forms.Form):
-    counter = forms.IntegerField()
-    #ordID = forms.CharField(widget = forms.HiddenInput(), required = False)
-
-class orderForm(forms.ModelForm):
-	ordQuantity = forms.IntegerField()
-
-class dispatchingForm(forms.ModelForm):
-    class Meta:
-        model= Order
-        fields = '__all__'
-
+    ordID = forms.IntegerField()
+    ordID = forms.CharField(widget = forms.HiddenInput(), required = False)
 
 
 def getClinics():
     some = set()
     allClinics = Clinic.objects.all()
     for clin in allClinics:
-        some.update([(clin.pk, clin.pk)])
+        some.update([(clin.pk, clin)])
     return some
 
 
 ########################### Ordering medicine forms ############################
 
 class StartOrderForm(forms.Form):
-    CHOICES = (('Low','Low'),
-        ('Medium','Medium'),
-        ('High','High'))
+    CHOICES = ((0,'Low'),
+        (1,'Medium'),
+        (2,'High'))
     priority = forms.ChoiceField(choices=CHOICES)
-    destination = forms.ChoiceField(choices=getClinics())
 
 class OrderSuppliesForm(forms.Form):
     orderID = forms.IntegerField()
@@ -68,3 +58,12 @@ class CancelOrderForm(forms.Form):
 class ConfirmOrderForm(forms.Form):
     orderID = forms.IntegerField()
     confirm = forms.CharField(max_length=16)
+
+class AddDistanceForm(forms.Form):
+    distance = forms.FloatField()
+    currentClin = forms.ChoiceField(choices=getClinics())
+    nextClin = forms.ChoiceField(choices=getClinics())
+
+class DeleteOrderForm(forms.Form):
+    orderID = forms.IntegerField()
+    cancel = forms.CharField(max_length=16)

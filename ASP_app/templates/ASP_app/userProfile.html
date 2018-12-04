@@ -1,31 +1,15 @@
 {% extends "ASP_app/base.html" %}
 
+{% block title %}Edit Profile{% endblock %}
+
 {% block content %}
-
-    <h1>User Profile</h1>
-
-    {% if users %}
-        {% for user in users %}
-            {% if True %}
-            <table>
-                <td>Your username is : {{ user.username }} </td>
-                <tr>
-                <td>Change username to <form action=""><input type="text" name="username" ></form></td>
-                </tr>
-                <tr>
-                <td>Change Password <form action="changepwd"><input type="textarea" name="pwd"</form></td>
-                </tr>
-                <tr>
-                <td>Confirm Password <form action="changepwd"><input type="textarea" name="pwd"</form></td>
-                </tr>
-                <tr></tr>
-
-                <td>{{ user.email }}</td>
-                <tr></tr>
-                <th><button> Submit  <form type="submit"> </button></th>
-            </table>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    <h2>User Profile</h2>
+        <form action='.' method="post">
+          {% csrf_token %}
+            {{ form.as_p }}
+          <button type="submit">Edit Profile</button>
+        </form>
+    <p><a href="{% url 'change_password' %}">change password</a></p>
+    <p><a href="{% url 'logout' %}">logout</a></p>
 
 {% endblock %}

@@ -6,23 +6,26 @@
 
         <table width="80%"><tr><th>Priority:</th><th>Order No.</th><th>Weight:</th><th></th></tr>
 
-        <h2> {{counter}} orders with highest priority </h2>
-        <p> with ~5.0 kg per drone </p>
+        <h2> Orders queued for dispatch  </h2>
 
         {% for order in orders %}
-                <form action="/dispatching/" method="post">  {% csrf_token %}
 
                 <tr>
                     <th>{{ order.get_priority_display }} </th>
                     <th>{{ order.id }} </th>
                     <th>{{ order.totalWeight }}</th>
+                    <form action="/dispatch/" method="post" >  {% csrf_token %}
+                      <input type ="hidden" value = {{order.id}} name="orderid">
+                    </form>
                 </tr>
-                <input type="hidden" value={{counter}} name="counter">
-                <input type="hidden" value={{order.id}} name="ordID">
         {% endfor %}
                 </table>
-                    <input type="submit" value="Dispatch" name="Dispatch">
+                <form action="/dispatching/" method="post">  {% csrf_token %}
+                  <input type="hidden" value={{counter}} name="counter">
+                  <input type="hidden" value={{order.id}} name="ordID">
+                  <input type="submit" value="Pack and confirm dispatch" name="Dispatch">
                 </form>
+                <p> with ~25.0 kg per drone (including container weight of 1.2kg ) </p>
 
     {% else %}
 

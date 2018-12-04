@@ -1,0 +1,7 @@
+The Itinerary of drone in order of :
+Order Id , Clinic Name , latitude  , longitude , altitude
+
+{% for row in data %}"{{ row.0|addslashes }}", "{{ row.1|addslashes }}", "{{ row.2|addslashes }}", "{{ row.3|addslashes }}", "{{ row.4|addslashes }}"
+
+{% endfor %}
+Final Destination, "Queen Mary Hospital Drone Port", "22.270257", "114.131376", "161m"

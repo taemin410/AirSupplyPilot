@@ -6,15 +6,15 @@
 
   {% if order %}
     Order id.: {{ order.id }} <br>
-    Priority: {{ order.priority }} <br>
+    Priority: {{ order.get_priority_display }} <br>
     Weight: {{ order.totalWeight }}<br> <br>
-    <h2>Contents:</h2><br>
+    <h2>Contents:</h2>
     {% for item in orderItems %}
       Description: {{item.medicine.description}} <br>
       Quantity: {{item.quantity}} <br>
       Category: {{item.medicine.category}} <br> <br>
     {% endfor %}
-    <th style="font-weight: normal;"> <a href="/downloadlabel?order={{order.id}}" target="_blank">something for pdf</a></th>
+    <th style="font-weight: normal;"> <a href="/downloadlabel?order={{order.id}}" target="_blank">Download shipping label</a></th><br><br>
     <form action="/priorityQueue/" method="post">
         {% csrf_token %}
         <input type="hidden" value={{order.id}} name="ordID">

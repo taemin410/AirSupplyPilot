@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Password reset on 127.0.0.1:8000
+From: webmaster@localhost
+To: interesting@gmail.com
+Date: Thu, 29 Nov 2018 06:41:53 -0000
+Message-ID: <154347371329.17884.136515877008679284@LAPTOP-Q36KHC9E>
+
+
+You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.
+
+Please go to the following page and choose a new password:
+
+http://127.0.0.1:8000/users/reset/Mw/51p-f8bb53ea14fc60e94900/
+
+Your username, in case you've forgotten: interesting@gmail.com
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+
+
+
+-------------------------------------------------------------------------------

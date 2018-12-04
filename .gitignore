@@ -1,0 +1,15 @@
+__pycache__
+*__pycache__
+*__pycache__*
+__pycache__/
+ASP_app/__pycache__/*
+__pycache__/
+ASP_app/__pycache__/*
+db*
+*.sqlite3
+*.pyc
+db*
+db.*
+db.sqlite3
+*migrations
+*Pipfile

@@ -5,6 +5,8 @@ from django.utils import timezone
 from django import forms
 import os
 from django.contrib.auth.models import AbstractUser
+from users.models import Clinic
+from users.models import CustomUser
 # Create your models here.
 
 def get_image_path(instance, filename):
@@ -19,6 +21,7 @@ PRIORITY_CHOICES = (
     (MEDIUM, 'Medium'),
     (HIGH, 'High'),
 )
+
 
 STATUS_CHOICES = (
     ('Queued for Processing','Queued for Processing'),
@@ -37,14 +40,14 @@ class Medicine(models.Model):
     def __str__(self):
         return "medicine: {}, category: {}, weight: {}".format(self.description, self.category, self.shippingWeight)
 
-class Clinic(models.Model):
+'''class Clinic(models.Model):
     name = models.CharField(max_length=256)
     longitude =models.DecimalField(max_digits=9, decimal_places=6)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     altitude = models.IntegerField()
 
     def __str__(self):
-        return "clinic: {}".format(self.name)
+        return "clinic: {}".format(self.name)'''
 
 class Order(models.Model):
     priority = models.IntegerField(choices=PRIORITY_CHOICES)
@@ -52,7 +55,7 @@ class Order(models.Model):
     orderTime = models.DateTimeField(auto_now_add=True, blank=True)
     dispatchTime = models.DateTimeField(blank=True, null=True)
     deliveryTime = models.DateTimeField(blank=True, null=True)
-    destination = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    destination = models.ForeignKey(Clinic, on_delete=models.CASCADE,blank=True, null=True)
 
     def totalWeight(self):
         orderItems = OrderedItems.objects.filter(orderID=self.pk)
@@ -83,79 +86,14 @@ class OrderedItems(models.Model):
         itemWeight = self.quantity * self.medicine.shippingWeight
         return round(itemWeight,2)
 
-class ShippingLabel(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    # contents = models.CharField(max_length=512) #OrderedItems.getContents(orderID) # does this even work?
-    finalDestination = models.CharField(max_length=256)
-
-    def contents(self):
-        return OrderedItems.objects.filter(orderID=self.order.pk)
-
 class Dispatch(models.Model):
     orderID = models.ForeignKey(Order, on_delete=models.CASCADE)
     droneID = models.IntegerField()
 
-class User(models.Model):
-    email = models.EmailField("email address", unique=True)
-    username = models.CharField("username", max_length=30, blank=True, unique=True)
-    firstname= models.CharField("firstname",blank=True, max_length=20)
-    lastname = models.CharField("lastname", blank=True, max_length=20)
-    password= models.CharField("password", blank=True, max_length=30)
-
-    USERNAME_FIELD = "email"
+class ClinicDistances(models.Model):
+    currentClinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='currentDroneClinic')
+    nextClinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='nextDestinationClinic')
+    distance = models.FloatField()
 
     def __str__(self):
-        return self.username
-
-    def getusername(self):
-        for user in User:
-            spcificuser= User.objects.get(id=user.username)
-        return specificuser
-
-class ProcessedDispatch(models.Model):
-    dispatchID = models.ForeignKey(Dispatch, on_delete=models.CASCADE)
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
-
-#
-# class CustomUser(AbstractUser):
-#     pass
-#
-# class ClinicManager(CustomUser):
-#     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
-#
-#     def placeOrder():
-#         pass
-#
-#     def viewOrders():
-#         pass
-#
-#     def cancelOrder():
-#         pass
-#
-#     def updateOrderStatus():
-#         pass
-#
-# class WarehousePersonnel(CustomUser):
-#
-#     def viewOrder():
-#         pass
-#
-#     def removeOrder():
-#         pass
-#
-#     def updateOrderStatus():
-#         pass
-#
-# class Dispatcher(CustomUser):
-#
-#     def viewOrder():
-#         pass
-#
-#     def removeOrder():
-#         pass
-#
-#     def updateOrderStatus():
-#         pass
-#
-#     def downloadItinerary():
-#         pass
+        return "distance is: {} from '{}' to '{}'".format(self.distance, self.currentClinic, self.nextClinic)

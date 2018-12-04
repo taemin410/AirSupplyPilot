@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Validate Token{% endblock %}
+
+{% block content %}
+<h2>Validate Token</h2>
+<form action='.' method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Validate">
+</form>
+{% endblock %}

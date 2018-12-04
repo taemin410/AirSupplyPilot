@@ -8,40 +8,51 @@
         <table width="80%">
             <tr>
                 <th><u>Order No.</u></th>
-                <th><u>Specification</u></th>
-                {% if isWarehouse %}
+                <th><u>Clinic</u></th>
+                {% if user.role == "Warehouse Personnel" %}
                     <th><u>PDF</u></th>
                 {% endif %}
                 <th><u>Status</u></th>
                 <th><u>Weight</u></th>
-                <th><u>Change status</u></th>
-                <th><u>Delivered Time</u></th>
+                <th><u>Order Time</u></th>
+                <th><u>Dispatch Time</u></th>
+                <th><u>Confirm delivery</u></th>
+                <th><u>Cancel Order</u></th>
             </tr>
         {% for order in orders %}
-                <tr style="font-weight: normal;">
-                    <th style="font-weight: normal;">{{ order.destination }} </th>
-                    <th style="font-weight: normal;">something for spec</th>
-                    {% if isWarehouse %}
-                        <th style="font-weight: normal;"> <a href="/downloadlabel?order={{order.id}}" target="_blank">something for pdf</a></th>
-                    {% endif %}
-                    <th style="font-weight: normal;">{{ order.status }}</th>
-                    <th style="font-weight: normal;">{{ order.totalWeight }} kg</th>
-                    <th>
-                        <form action="/orderStatus/" method="post">
-                            {% csrf_token %}
-                            <input type="Hidden" value={{order.id}} name="ordID">
-                            <select label="choice" name="choice">
-                                    <option value="Queued for Processing">Queued for Processing</option>
-                                    <option value="Processing by Warehouse">Processing by Warehouse</option>
-                                    <option value="Queued for Dispatch">Queued for Dispatch</option>
-                                    <option value="Dispatched">Dispatched</option>
-                                    <option value="Delivered">Delivered</option>
-
-                            </select>
-                            <input type="submit" value="change">
-                        </form>
-                    </th>
-                </tr>
+            {% if order.status != "Delivered" %}
+                {% if order.destination == request.user.clinic %}
+                  <tr style="font-weight: normal;">
+                      <th style="font-weight: normal;">{{ order.pk }} </th>
+                      <th style="font-weight: normal;">{{ order.destination }} </th>
+                      <th style="font-weight: normal;">{{ order.status }}</th>
+                      <th style="font-weight: normal;">{{ order.totalWeight }} kg</th>
+                      <th>{{order.orderTime}}</th>
+                      <th>{{order.dispatchTime}}</th>
+                      <th></th>
+                      <th>
+                          {% if order.status == "Dispatched" %}
+                            <form action="/orderStatus/" method="post">
+                                {% csrf_token %}
+                                <input type="Hidden" value={{order.id}} name="ordID">
+                                <input type="hidden" value="Delivered" name="choice">
+                                <input type="submit" value="Delivered">
+                            </form>
+                          {% endif %}
+                      </th>
+                      <th>
+                          {% if order.status == "Queued for Processing" or order.status == "Incomplete"  %}
+                            <form action="/cancelOrder/" method="post">
+                                {% csrf_token %}
+                                <input type="Hidden" value={{order.id}} name="orderID">
+                                <input type="hidden" value="CANCEL" name="cancel">
+                                <input type="submit" value="Cancel order">
+                            </form>
+                          {% endif %}
+                      </th>
+                  </tr>
+                {% endif %}
+            {% endif %}
         {% endfor %}
         </table>
     {% else %}

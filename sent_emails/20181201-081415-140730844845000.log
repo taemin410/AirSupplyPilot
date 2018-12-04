@@ -1,0 +1,38 @@
+Content-Type: multipart/alternative;
+ boundary="===============6253216104785878422=="
+MIME-Version: 1.0
+Subject: Sign Up
+From: ASP@HealthAutority.com
+To: dispatch@dispatch.nl
+Date: Sat, 01 Dec 2018 08:14:15 -0000
+Message-ID: <154365205587.61.2020618951148585530@LAPTOP-E59JJ933.localdomain>
+
+--===============6253216104785878422==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+Hereby you are invited to join the ASP system.
+With the following token you can create an account: b6f3b5bcece326defd827e367b7f189c7ba9b403
+Go to http://127.0.0.1:8000/users/validate_token/ to validate the token.
+
+Kind regards,
+Admin
+--===============6253216104785878422==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+Hereby you are invited to join the ASP system.
+With the following token you can create an account: b6f3b5bcece326defd827e367b7f189c7ba9b403
+Go to http://127.0.0.1:8000/users/validate_token/ to validate the token.
+
+Kind regards,
+Admin
+--===============6253216104785878422==--
+
+-------------------------------------------------------------------------------

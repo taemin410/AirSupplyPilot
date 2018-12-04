@@ -1,45 +1,91 @@
 <head>
+<title>AS-P</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
+
 <style>
 a:link, a:visited {
-    background-color: #f44336;
+    background-color: #39a2e3;
     color: white;
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-
+    border-radius: 5px;
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
 }
 
 a:hover, a:active {
-    background-color: blue;
+    background-color: #085d92;
 }
 
 table {
-    font-family: arial, sans-serif;
+    font-family: Helvetica, arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
 td, th {
-    border: 1px solid #dddddd;
     text-align: left;
-    padding: 8px;
+    padding: 10px;
 }
 
-tr:nth-child(even) {
-   background-color: #dddddd;
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.page-header {
+    background-color: #39a2e3;
+    margin-top: 0px;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 40px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
 }
 
 </style>
 </head>
 
+{% if user.is_authenticated %}
 
 <header>
+  <div class="page-header">
+      <h1>AS-P</h1>
+  </div>
+
     <a href="/dashboard">Home</a>
-    <a href='/priorityQueue'>Priority queue</a>
-    <a href="/startOrder">Order Supplies</a>
-    <a href='/orderStatus'>Packing</a>
     <a href='/profile/'>User profile</a>
-    <a href='/dispatch'>Dispatch</a>
+    {% if user.role == "Warehouse Personnel" %}
+        <a href='/priorityQueue'>Priority queue</a>
+    {% elif user.role == "Clinic Manager" %}
+        <a href="/startOrder">Order Supplies</a>
+        <a href='/orderStatus'>Order Status</a>
+    {% elif user.role == "Dispatcher" %}
+        <a href='/dispatch'>Dispatch</a>
+    {% endif %}
+    <a href="{% url 'logout' %}" style="float:right;">logout</a>
+
 </header>
-{% block content %}{% endblock %}
+<br>
+    {% block content %}{% endblock %}
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}

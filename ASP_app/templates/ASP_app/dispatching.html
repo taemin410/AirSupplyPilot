@@ -1,0 +1,38 @@
+{% extends "ASP_app/base.html" %}
+
+
+
+{% block content %}
+
+
+<div> Orders with ID:
+    {% for order in orders %}
+        {{ order.id }} /
+        {% endfor %}
+total weight : {{sum}} / 25.0 kg
+</div>
+
+ {% if orders %}
+        <table width="80%"><tr><th>Priority:</th><th>Order No.</th><th>Weight:</th><th></th></tr>
+        {% for order in orders %}
+                <tr>
+                    <th>{{ order.get_priority_display }} </th>
+                    <th>{{ order.id }} </th>
+                    <th>{{ order.totalWeight }}</th>
+                </tr>
+        {% endfor %}
+                </table>
+    <form action="/csv/" method="post"> {% csrf_token %}
+      <input type="submit" value="Download csv File" name="CSV file"  />
+      <input type="hidden" value={{counter}} name = "counter" >
+    </form>
+    <form action="/confirmDispatch/" method="post">  {% csrf_token %}
+      <input type="submit" value="Confirm dispatch" name="Confirm Dispatch" />
+      <input type="hidden" value={{counter}} name = "counter" >
+      <input type="hidden" value={{ordlist}} name = "ordlist" >
+    </form>
+    {% else %}
+        <p>No orders are available.</p>
+    {% endif %}
+
+{% endblock %}

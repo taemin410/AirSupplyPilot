@@ -2,6 +2,7 @@
 
 {% block content %}
 
+  <h2>Priority Queue</h2>
     {% if orders %}
         <table width="80%">
           <tr>
@@ -14,7 +15,9 @@
             {% if order.status == "Queued for Processing" %}
                 <tr>
                     <th>{{ order.id }} </th>
-                    <th>{{ order.priority }} </th>
+
+                    <th>{{ order.get_priority_display }} </th>
+
                     <th>{{ order.totalWeight }}</th>
                     <th>
                         <form action="/packing/" method="post">
@@ -29,7 +32,39 @@
         {% endfor %}
         </table>
     {% else %}
-        <p>No orders are available.</p>
+        <p>No orders are available for processing.</p>
+    {% endif %}
+
+    <h2>Currently processing</h2>
+    {% if orders %}
+        <table width="80%">
+          <tr>
+            <th>Order No.:</th>
+            <th>Priority:</th>
+            <th>Weight:</th>
+            <th></th><th></th>
+          </tr>
+        {% for order in orders %}
+            {% if order.status == "Processing by Warehouse" %}
+                <tr>
+                    <th>{{ order.id }} </th>
+                    <th>{{ order.priority }} </th>
+                    <th>{{ order.totalWeight }}</th>
+                    <th><a href='/packing/?order={{ order.id }}'>Order details</a></th>
+                    <th>
+                        <form action="/packing/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value={{order.id}} name="ordID">
+                            <input type="hidden" value="Queued for Dispatch" name="choice">
+                            <input type="submit" value="Finish processing">
+                        </form>
+                    </th>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No orders are currently being processed.</p>
     {% endif %}
 
 {% endblock %}

@@ -1,0 +1,38 @@
+Content-Type: multipart/alternative;
+ boundary="===============7494431900115017678=="
+MIME-Version: 1.0
+Subject: Sign Up
+From: ASP@HealthAutority.com
+To: lycheeniibs@gmail.com
+Date: Thu, 29 Nov 2018 07:43:11 -0000
+Message-ID: <154347739101.14736.2642539088885497453@LAPTOP-Q36KHC9E>
+
+--===============7494431900115017678==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+Hereby you are invited to join the ASP system.
+With the following token you can create an account: c7ef36ca3c81929f6075723d77ce20b1e69531bd
+Go to http://127.0.0.1:8000/users/validate_token/ to validate the token.
+
+Kind regards,
+Admin
+--===============7494431900115017678==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+Hereby you are invited to join the ASP system.
+With the following token you can create an account: c7ef36ca3c81929f6075723d77ce20b1e69531bd
+Go to http://127.0.0.1:8000/users/validate_token/ to validate the token.
+
+Kind regards,
+Admin
+--===============7494431900115017678==--
+
+-------------------------------------------------------------------------------

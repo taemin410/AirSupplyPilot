@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'authtools'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +85,16 @@ DATABASES = {
     }
 }
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "photos"),
+)
+
+MEDIA_ROOT = (
+BASE_DIR
+)
+
+MEDIA_URL = '/media/'
+
 #### comment in to activater custom user class
 # AUTH_USER_MODEL = 'ASP_app.CustomUser' #self added user model
 
@@ -121,3 +135,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
